@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <ul>
+        <li>
+            <a href="{{ path('forecast') }}">
+                Check another place weather
+            </a>
+        </li>
+    </ul>
+    <ul>
+        <li>Country: {{ place.country }}</li>
+        <li>City: {{ place.city }}</li>
+        <li>Temperature: {{ temperature }}</li>
+    </ul>
+{% endblock %}
