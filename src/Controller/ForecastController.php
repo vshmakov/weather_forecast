@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\DTO\Place;
 use App\Form\PlaceType;
+use App\Temperature\TemperatureProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ForecastController extends AbstractController
 {
     #[Route('/', name: 'forecast')]
-    public function index(Request $request): Response
+    public function index(Request $request, TemperatureProviderInterface $temperatureProvider): Response
     {
         $place = new Place();
         $form = $this->createForm(PlaceType::class, $place);
@@ -23,7 +24,7 @@ final class ForecastController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->render('forecast/view.html.twig', [
                 'place' => $place,
-                'temperature' => '+23',
+                'temperature' => $temperatureProvider->getTemperature($place),
             ]);
         }
 
