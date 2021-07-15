@@ -2,8 +2,7 @@
 
 $finder = (new PhpCsFixer\Finder())
     ->in(__DIR__)
-    ->exclude('var')
-;
+    ->exclude('var');
 
 return (new PhpCsFixer\Config())
     ->setRules([
@@ -63,7 +62,8 @@ return (new PhpCsFixer\Config())
         'concat_space' => true,
         'php_unit_test_case_static_method_calls' => ['call_type' => 'this'],
         'method_chaining_indentation' => true,
+        'final_class' => true,
     ])
     ->setFinder($finder)
     ->setCacheFile('.php-cs-fixer.cache') // forward compatibility with 3.x line
-;
+    ;
