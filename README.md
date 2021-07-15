@@ -12,7 +12,7 @@
 
 #### Task
 
-Please create a simple Laravel/Symfony/(Any other framework you like) site where a user will be able to provide his city and country via form and after submission system will display current weather forecast. 
+Please create a simple Laravel/Symfony/(Any other framework you like) site where a user will be able to provide his city and country via form and after submission system will display current weather forecast.
 
 Forecast temperature should be calculated as an average based on different APIs, at least 2 different data sources (ex. API1 will return temperature 25, API2 will return temperature 27 so the result should be 25+27/2 ie. 26)
 
