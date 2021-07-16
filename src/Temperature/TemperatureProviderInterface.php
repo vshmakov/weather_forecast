@@ -10,5 +10,5 @@ interface TemperatureProviderInterface
 {
     public const EXTERNAL_SOURCE_TAG = 'temperature.external.source.provider';
 
-    public function getTemperature(Place $place): int;
+    public function getTemperature(Place $place): float;
 }

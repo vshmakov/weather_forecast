@@ -15,7 +15,7 @@ final class AverageTemperatureProvider implements TemperatureProviderInterface
     ) {
     }
 
-    public function getTemperature(Place $place): int
+    public function getTemperature(Place $place): float
     {
         /** @var TemperatureProviderInterface[] $providers */
         $providers = iterator_to_array($this->temperatureProviders);
@@ -27,6 +27,6 @@ final class AverageTemperatureProvider implements TemperatureProviderInterface
             $total += $provider->getTemperature($place);
         }
 
-        return (int) round($total / $count);
+        return round($total / $count);
     }
 }
