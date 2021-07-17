@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Api call history
+{% endblock %}
+
+{% block body %}
+    <h1>{{ block('title') }}</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>CalledAt</th>
+            <th>StatusCode</th>
+            <th>Content</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for external_service_call_result in external_service_call_results %}
+            <tr>
+                <td>{{ external_service_call_result.calledAt ? external_service_call_result.calledAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ external_service_call_result.statusCode }}</td>
+                <td>{{ external_service_call_result.content }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
