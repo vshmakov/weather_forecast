@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/', name: 'weather_forecast')]
+#[
+Route('/', name: 'weather_forecast', methods: [Request::METHOD_GET]))]
 final class WeatherForecastController extends AbstractController
 {
     public function __invoke(Request $request, TemperatureProviderInterface $temperatureProvider): Response
@@ -26,7 +27,9 @@ final class WeatherForecastController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $temperature = $temperatureProvider->getTemperature($place);
+                $temperature = $this->styleTemperature(
+                    $temperatureProvider->getTemperature($place)
+                );
             } catch (PlaceIsNotSupportedException) {
                 $form->addError(new FormError('There is no temperature forecast for this place. Please, change it and try again.'));
             }
@@ -34,20 +37,18 @@ final class WeatherForecastController extends AbstractController
 
         return $this->render('weather_forecast.html.twig', [
             'form' => $form->createView(),
-            'temperature' => $this->styleTemperature($temperature),
+            'temperature' => $temperature,
         ]);
     }
 
-    private function styleTemperature(?float $temperature): ?string
+    private function styleTemperature(float $temperature): string
     {
-        if (null === $temperature) {
-            return null;
-        }
+
 
         if ($temperature > 0) {
-            return '+'.$temperature;
+            return '+' . $temperature;
         }
 
-        return (string) $temperature;
+        return (string)$temperature;
     }
 }

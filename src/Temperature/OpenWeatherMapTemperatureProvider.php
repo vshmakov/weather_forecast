@@ -18,13 +18,13 @@ final class OpenWeatherMapTemperatureProvider implements TemperatureProviderInte
 
     public function getTemperature(Place $place): float
     {
-        $data = $this->weatherServiceClient
+        $forecast = $this->weatherServiceClient
             ->requestForecast('https://api.openweathermap.org/data/2.5/weather', [
                 'APPID' => $this->apiKey,
                 'q' => implode(',', [$place->city, $place->country]),
                 'units' => 'Metric',
             ]);
 
-        return $data['main']['temp'];
+        return $forecast['main']['temp'];
     }
 }

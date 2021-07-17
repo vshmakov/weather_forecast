@@ -18,13 +18,13 @@ final class WeatherBitTemperatureProvider implements TemperatureProviderInterfac
 
     public function getTemperature(Place $place): float
     {
-        $data = $this->weatherServiceClient
+        $forecast = $this->weatherServiceClient
             ->requestForecast('https://api.weatherbit.io/v2.0/current', [
                 'key' => $this->apiKey,
                 'city' => $place->city,
                 'country' => $place->country,
             ]);
 
-        return $data['data'][0]['temp'];
+        return $forecast['data'][0]['temp'];
     }
 }
