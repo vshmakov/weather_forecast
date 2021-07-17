@@ -6,6 +6,7 @@ namespace App\Temperature;
 
 use App\Entity\ExternalServiceCallResult;
 use App\Exception\PlaceIsNotSupportedException;
+use App\Exception\UnauthorizedExternalServiceException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,7 @@ final class WeatherServiceClient
 
     /**
      * @throws PlaceIsNotSupportedException
+     * @throws UnauthorizedExternalServiceException
      */
     public function requestForecast(string $url, array $parameters): array
     {
@@ -37,6 +39,10 @@ final class WeatherServiceClient
         );
         $this->entityManager->persist($externalServiceCallResult);
         $this->entityManager->flush();
+
+        if (\in_array($statusCode, [Response::HTTP_UNAUTHORIZED, Response::HTTP_FORBIDDEN], true)) {
+            throw new UnauthorizedExternalServiceException(sprintf('%s endpoint authorization is failed. Please check api keys', $url));
+        }
 
         if (Response::HTTP_OK !== $statusCode) {
             throw new PlaceIsNotSupportedException(sprintf('%s endpoint does not support provided place', $url));
