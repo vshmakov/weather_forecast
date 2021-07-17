@@ -6,7 +6,9 @@
 
 {% block body %}
     <h1>{{ block('title') }}</h1>
-
+<div>
+    Total items: {{ external_service_call_results|length }}
+</div>
     <table class="table">
         <thead>
         <tr>

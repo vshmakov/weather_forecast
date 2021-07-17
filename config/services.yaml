@@ -29,3 +29,6 @@ services:
             $apiKey: '%env(OPEN_WEATHER_MAP_API_KEY)%'
 
     App\Temperature\TemperatureProviderInterface: '@App\Temperature\AverageTemperatureProvider'
+
+    App\Temperature\CacheResultDecorator:
+        decorates: App\Temperature\TemperatureProviderInterface
