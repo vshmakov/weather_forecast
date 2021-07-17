@@ -12,24 +12,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class ForecastController extends AbstractController
+#[Route('/', name: 'weather_forecast')]
+final class WeatherForecastController extends AbstractController
 {
-    #[Route('/', name: 'forecast')]
-    public function index(Request $request, TemperatureProviderInterface $temperatureProvider): Response
+    public function __invoke(Request $request, TemperatureProviderInterface $temperatureProvider): Response
     {
         $place = new Place();
         $form = $this->createForm(PlaceType::class, $place);
         $form->handleRequest($request);
+        $temperature = null;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->render('forecast/view.html.twig', [
-                'place' => $place,
-                'temperature' => $temperatureProvider->getTemperature($place),
-            ]);
+            $temperature = $temperatureProvider->getTemperature($place);
         }
 
-        return $this->render('forecast/index.html.twig', [
+        return $this->render('weather_forecast.html.twig', [
             'form' => $form->createView(),
+            'temperature' => $temperature,
         ]);
     }
 }

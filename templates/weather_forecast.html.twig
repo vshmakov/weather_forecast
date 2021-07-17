@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+        <h1>Where are you?</h1>
+    {{ form(form) }}
+    {% if temperature is not null %}
+        <ul>
+            <li>Current weather forecast: {{ temperature }}</li>
+        </ul>
+    {% endif %}
+{% endblock %}
