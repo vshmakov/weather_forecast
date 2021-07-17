@@ -14,8 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[
-Route('/', name: 'weather_forecast', methods: [Request::METHOD_GET]))]
+#[Route('/', name: 'weather_forecast', methods: [Request::METHOD_GET])]
 final class WeatherForecastController extends AbstractController
 {
     public function __invoke(Request $request, TemperatureProviderInterface $temperatureProvider): Response
@@ -43,12 +42,10 @@ final class WeatherForecastController extends AbstractController
 
     private function styleTemperature(float $temperature): string
     {
-
-
         if ($temperature > 0) {
-            return '+' . $temperature;
+            return '+'.$temperature;
         }
 
-        return (string)$temperature;
+        return (string) $temperature;
     }
 }
