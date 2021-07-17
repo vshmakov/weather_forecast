@@ -28,7 +28,7 @@ final class WeatherForecastController extends AbstractController
             try {
                 $temperature = $temperatureProvider->getTemperature($place);
             } catch (PlaceIsNotSupportedException) {
-                $form->addError(new FormError('There is no temperature forecast for this place. Please, change it and try again.'));
+                $form->addError(new FormError('There is no temperature forecast for this place. Please change it and try again.'));
             }
         }
 
