@@ -6,25 +6,32 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
 
-#[Entity]
-final class ExternalServiceCallResult
+/**
+ * @ORM\Entity
+ */
+class ExternalServiceCallResult
 {
-    #[
-        ORM\Id,
-        ORM\GeneratedValue,
-        ORM\Column,
-    ]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private ?int $id = null;
 
-    #[ORM\Column]
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
     private DateTimeImmutable $calledAt;
 
-    #[ORM\Column]
+    /**
+     * @ORM\Column(type="integer")
+     */
     private int $statusCode;
 
-    #[ORM\Column(type: 'text')]
+    /**
+     * @ORM\Column(type="text")
+     */
     private string $content;
 
     public function __construct(int $statusCode, string $content)
