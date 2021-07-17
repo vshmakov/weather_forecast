@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210717072431 extends AbstractMigration
+final class Version20210717113330 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,7 +21,7 @@ final class Version20210717072431 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SEQUENCE external_service_call_result_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE external_service_call_result (id INT NOT NULL, called_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, status_code INT NOT NULL, content TEXT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE external_service_call_result (id INT NOT NULL, called_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, url TEXT NOT NULL, status_code INT NOT NULL, content TEXT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN external_service_call_result.called_at IS \'(DC2Type:datetime_immutable)\'');
     }
 
