@@ -19,6 +19,9 @@ final class WeatherServiceClient
     ) {
     }
 
+    /**
+     * @throws PlaceIsNotSupportedException
+     */
     public function requestForecast(string $url, array $parameters): array
     {
         $response = $this->httpClient
@@ -26,6 +29,7 @@ final class WeatherServiceClient
                 'query' => $parameters,
             ]);
         $statusCode = $response->getStatusCode();
+
         $externalServiceCallResult = new ExternalServiceCallResult(
             $url,
             $statusCode,
@@ -35,7 +39,7 @@ final class WeatherServiceClient
         $this->entityManager->flush();
 
         if (Response::HTTP_OK !== $statusCode) {
-            throw PlaceIsNotSupportedException::notSupportedByEndpoint($this, $place);
+            throw new PlaceIsNotSupportedException(sprintf('%s endpoint does not support provided place', $url));
         }
 
         return $response->toArray();
