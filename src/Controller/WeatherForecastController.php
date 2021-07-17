@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\DTO\Place;
+use App\Exception\InvalidPlaceException;
 use App\Form\PlaceType;
 use App\Temperature\TemperatureProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +25,11 @@ final class WeatherForecastController extends AbstractController
         $temperature = null;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $temperature = $temperatureProvider->getTemperature($place);
+            try {
+                $temperature = $temperatureProvider->getTemperature($place);
+            } catch (InvalidPlaceException) {
+                $form->addError(new FormError('There is no temperature forecast for this place. Please, change it and try again.'));
+            }
         }
 
         return $this->render('weather_forecast.html.twig', [

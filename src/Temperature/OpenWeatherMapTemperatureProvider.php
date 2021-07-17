@@ -6,9 +6,11 @@ namespace App\Temperature;
 
 use App\DTO\Place;
 use App\Entity\ExternalServiceCallResult;
+use App\Exception\InvalidPlaceException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AutoconfigureTag(TemperatureProviderInterface::EXTERNAL_SOURCE_TAG)]
@@ -32,12 +34,17 @@ final class OpenWeatherMapTemperatureProvider implements TemperatureProviderInte
                 ],
             ]);
 
+        $statusCode = $response->getStatusCode();
         $externalServiceCallResult = new ExternalServiceCallResult(
-            $response->getStatusCode(),
+            $statusCode,
             $response->getContent(false)
         );
         $this->entityManager->persist($externalServiceCallResult);
         $this->entityManager->flush();
+
+        if (Response::HTTP_OK !== $statusCode) {
+            throw InvalidPlaceException::notSupportedByTemperatureProvider($this, $place);
+        }
 
         $data = $response->toArray(false);
         $temperature = $data['main']['temp'];
