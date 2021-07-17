@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\DTO\Place;
-use App\Exception\InvalidPlaceException;
+use App\Exception\PlaceIsNotSupportedException;
 use App\Form\PlaceType;
 use App\Temperature\TemperatureProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +27,7 @@ final class WeatherForecastController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $temperature = $temperatureProvider->getTemperature($place);
-            } catch (InvalidPlaceException) {
+            } catch (PlaceIsNotSupportedException) {
                 $form->addError(new FormError('There is no temperature forecast for this place. Please, change it and try again.'));
             }
         }
