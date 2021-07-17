@@ -25,6 +25,11 @@ class ExternalServiceCallResult
     private DateTimeImmutable $calledAt;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    private string $url;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private int $statusCode;
@@ -34,8 +39,9 @@ class ExternalServiceCallResult
      */
     private string $content;
 
-    public function __construct(int $statusCode, string $content)
+    public function __construct(string $url, int $statusCode, string $content)
     {
+        $this->url = $url;
         $this->statusCode = $statusCode;
         $this->content = $content;
         $this->calledAt = new DateTimeImmutable();
@@ -49,6 +55,11 @@ class ExternalServiceCallResult
     public function getCalledAt(): DateTimeImmutable
     {
         return $this->calledAt;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
     }
 
     public function getStatusCode(): int

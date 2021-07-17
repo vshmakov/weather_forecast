@@ -10,21 +10,23 @@
     <table class="table">
         <thead>
         <tr>
-            <th>CalledAt</th>
+            <th>Url</th>
             <th>StatusCode</th>
             <th>Content</th>
+            <th>CalledAt</th>
         </tr>
         </thead>
         <tbody>
         {% for external_service_call_result in external_service_call_results %}
             <tr>
-                <td>{{ external_service_call_result.calledAt ? external_service_call_result.calledAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ external_service_call_result.url }}</td>
                 <td>{{ external_service_call_result.statusCode }}</td>
                 <td>{{ external_service_call_result.content }}</td>
+                <td>{{ external_service_call_result.calledAt|date('Y-m-d H:i:s') }}</td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

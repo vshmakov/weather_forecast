@@ -25,17 +25,18 @@ final class OpenWeatherMapTemperatureProvider implements TemperatureProviderInte
 
     public function getTemperature(Place $place): float
     {
+        $url = 'https://api.openweathermap.org/data/2.5/weather';
         $response = $this->httpClient
-            ->request(Request::METHOD_GET, 'https://api.openweathermap.org/data/2.5/weather', [
+            ->request(Request::METHOD_GET, $url, [
                 'query' => [
                     'APPID' => $this->apiKey,
                     'q' => implode(',', [$place->city, $place->country]),
                     'units' => 'Metric',
                 ],
             ]);
-
         $statusCode = $response->getStatusCode();
         $externalServiceCallResult = new ExternalServiceCallResult(
+            $url,
             $statusCode,
             $response->getContent(false)
         );
