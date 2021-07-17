@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AutoconfigureTag(TemperatureProviderInterface::EXTERNAL_SOURCE_TAG)]
-final class OpenWeatherMapTemperatureProvider implements TemperatureProviderInterface
+final class WeatherBitTemperatureProvider implements TemperatureProviderInterface
 {
     public function __construct(
         private string $apiKey,
@@ -25,13 +25,13 @@ final class OpenWeatherMapTemperatureProvider implements TemperatureProviderInte
 
     public function getTemperature(Place $place): float
     {
-        $url = 'https://api.openweathermap.org/data/2.5/weather';
+        $url = 'https://api.weatherbit.io/v2.0/current';
         $response = $this->httpClient
             ->request(Request::METHOD_GET, $url, [
                 'query' => [
-                    'APPID' => $this->apiKey,
-                    'q' => implode(',', [$place->city, $place->country]),
-                    'units' => 'Metric',
+                    'key' => $this->apiKey,
+                    'city' => $place->city,
+                    'country' => $place->country,
                 ],
             ]);
         $statusCode = $response->getStatusCode();
@@ -48,7 +48,7 @@ final class OpenWeatherMapTemperatureProvider implements TemperatureProviderInte
         }
 
         $data = $response->toArray();
-        $temperature = $data['main']['temp'];
+        $temperature = $data['data'][0]['temp'];
 
         return $temperature;
     }

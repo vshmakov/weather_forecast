@@ -17,16 +17,19 @@ final class AverageTemperatureProvider implements TemperatureProviderInterface
 
     public function getTemperature(Place $place): float
     {
-        /** @var TemperatureProviderInterface[] $providers */
-        $providers = iterator_to_array($this->temperatureProviders);
-        $count = \count($providers);
-        Assert::notSame($count, 0, 'There is no temperature providers defined');
-        $total = 0;
+        $temperatureList = array_map(
+                    fn (TemperatureProviderInterface $temperatureProvider): float => $temperatureProvider->getTemperature($place),
+            iterator_to_array($this->temperatureProviders)
+                );
 
-        foreach ($providers as $provider) {
-            $total += $provider->getTemperature($place);
-        }
+        return $this->getAverageTemperature($temperatureList);
+    }
 
-        return round($total / $count);
+    private function getAverageTemperature(array $temperatureList): float
+    {
+        $count = \count($temperatureList);
+        Assert::notSame($count, 0, 'You must define at least one temperature provider');
+
+        return round(array_sum($temperatureList) / $count);
     }
 }

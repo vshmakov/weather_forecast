@@ -28,6 +28,10 @@ services:
         arguments:
             $apiKey: '%env(OPEN_WEATHER_MAP_API_KEY)%'
 
+    App\Temperature\WeatherBitTemperatureProvider:
+        arguments:
+            $apiKey: '%env(WEATHER_BIT_API_KEY)%'
+
     App\Temperature\TemperatureProviderInterface: '@App\Temperature\AverageTemperatureProvider'
 
     App\Temperature\CacheResultDecorator:

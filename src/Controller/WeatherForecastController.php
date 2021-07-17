@@ -34,7 +34,20 @@ final class WeatherForecastController extends AbstractController
 
         return $this->render('weather_forecast.html.twig', [
             'form' => $form->createView(),
-            'temperature' => $temperature,
+            'temperature' => $this->styleTemperature($temperature),
         ]);
+    }
+
+    private function styleTemperature(?float $temperature): ?string
+    {
+        if (null === $temperature) {
+            return null;
+        }
+
+        if ($temperature > 0) {
+            return '+'.$temperature;
+        }
+
+        return (string) $temperature;
     }
 }
