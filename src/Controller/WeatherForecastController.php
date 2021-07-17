@@ -26,9 +26,7 @@ final class WeatherForecastController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $temperature = $this->styleTemperature(
-                    $temperatureProvider->getTemperature($place)
-                );
+                $temperature = $temperatureProvider->getTemperature($place);
             } catch (PlaceIsNotSupportedException) {
                 $form->addError(new FormError('There is no temperature forecast for this place. Please, change it and try again.'));
             }
@@ -36,12 +34,16 @@ final class WeatherForecastController extends AbstractController
 
         return $this->render('weather_forecast.html.twig', [
             'form' => $form->createView(),
-            'temperature' => $temperature,
+            'temperature' => $this->styleTemperature($temperature),
         ]);
     }
 
-    private function styleTemperature(float $temperature): string
+    private function styleTemperature(?float $temperature): ?string
     {
+        if (null === $temperature) {
+            return null;
+        }
+
         if ($temperature > 0) {
             return '+'.$temperature;
         }
