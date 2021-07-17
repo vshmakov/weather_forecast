@@ -20,7 +20,7 @@ final class OpenWeatherMapTemperatureProvider implements TemperatureProviderInte
 
     public function getTemperature(Place $place): float
     {
-        $r = $this->httpClient
+        $response = $this->httpClient
             ->request(Request::METHOD_GET, 'https://api.openweathermap.org/data/2.5/weather', [
                 'query' => [
                     'APPID' => $this->apiKey,
@@ -28,7 +28,7 @@ final class OpenWeatherMapTemperatureProvider implements TemperatureProviderInte
                     'units' => 'Metric',
                 ],
             ]);
-        $data = $r->toArray(false);
+        $data = $response->toArray(false);
         $temperature = $data['main']['temp'];
 
         return $temperature;
