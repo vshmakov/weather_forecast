@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Temperature;
 
 use App\DTO\Place;
+use App\Entity\ExternalServiceCallResult;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -14,7 +16,8 @@ final class OpenWeatherMapTemperatureProvider implements TemperatureProviderInte
 {
     public function __construct(
         private string $apiKey,
-        private HttpClientInterface $httpClient
+        private HttpClientInterface $httpClient,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -28,6 +31,14 @@ final class OpenWeatherMapTemperatureProvider implements TemperatureProviderInte
                     'units' => 'Metric',
                 ],
             ]);
+
+        $externalServiceCallResult = new ExternalServiceCallResult(
+            $response->getStatusCode(),
+            $response->getContent(false)
+        );
+        $this->entityManager->persist($externalServiceCallResult);
+        $this->entityManager->flush();
+
         $data = $response->toArray(false);
         $temperature = $data['main']['temp'];
 
